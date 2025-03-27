@@ -10,7 +10,9 @@ from antlr4 import *
 from solidity_parser.solidity_antlr4.SolidityLexer import SolidityLexer
 from solidity_parser.solidity_antlr4.SolidityParser import SolidityParser
 from solidity_parser.solidity_antlr4.SolidityVisitor import SolidityVisitor
-
+import copy
+import requests
+import pprint
 
 class Node(dict):
     """
@@ -32,6 +34,23 @@ class Node(dict):
     def __setattr__(self, name, value):
         self[name] = value
 
+    def __deepcopy__(self, memo):
+        """
+        Implement deepcopy for the Node class.
+        """
+        # Create a new instance of Node
+        new_node = Node(ctx=None)  # ctx is not copied as it's typically not needed in the copy
+
+        # Deep copy all attributes
+        for key, value in self.items():
+            if key in self.NONCHILD_KEYS:
+                # Copy non-child keys directly (e.g., "type", "name", "loc")
+                new_node[key] = value
+            else:
+                # Recursively deep copy child nodes or other attributes
+                new_node[key] = copy.deepcopy(value, memo)
+
+        return new_node
     @staticmethod
     def _get_loc(ctx):
         return {
@@ -47,7 +66,27 @@ class Node(dict):
 
 
 class AstVisitor(SolidityVisitor):
+    def __init__(self):
+        super().__init__()
+        self._parsed_files = set()  # Track parsed files to avoid circular imports
+    def _parse_imported_file(self, import_path):
+        if import_path in self._parsed_files:
+            print(f"Warning: Circular import detected for '{import_path}'. Skipping.")
+            return None
 
+        try:
+            self._parsed_files.add(import_path)  # Mark file as parsed
+            return parse_file(import_path)
+        except FileNotFoundError:
+            print(f"Warning: Imported file '{import_path}' not found.")
+            return None
+    def _read_imported_file(self, import_path):
+        try:
+            with open(import_path, 'r', encoding="utf-8") as f:
+                return f.read()
+        except FileNotFoundError:
+            print(f"Warning: Imported file '{import_path}' not found.")
+            return None
     def _mapCommasToNulls(self, children):
         if not children or len(children) == 0:
             return []
@@ -301,15 +340,67 @@ class AstVisitor(SolidityVisitor):
                     visibility=visibility,
                     stateMutability=stateMutability)
 
+    # def visitFunctionCall(self, ctx):
+    #     args = []
+    #     names = []
+
+    #     ctxArgs = ctx.functionCallArguments()
+
+    #     if ctxArgs.expressionList():
+    #         args = [self.visit(a) for a in ctxArgs.expressionList().expression()]
+
+    #     elif ctxArgs.nameValueList():
+    #         for nameValue in ctxArgs.nameValueList().nameValue():
+    #             args.append(self.visit(nameValue.expression()))
+    #             names.append(nameValue.identifier().getText())
+
+    #     return Node(ctx=ctx,
+    #                 type='FunctionCall',
+    #                 expression=self.visit(ctx.expression()),
+    #                 arguments=args,
+        #                 names=names)
     def visitFunctionCall(self, ctx):
         args = []
         names = []
+        options = []
 
         ctxArgs = ctx.functionCallArguments()
 
+        # Get the base expression (msg.sender.call)
+        base_expr = self.visit(ctx.expression())
+
+        # Handle the curly bracket options if present
+        for i, child in enumerate(ctx.children):
+            if isinstance(child, TerminalNode) and child.getText() == '{':
+                start_idx = i + 1
+                end_idx = start_idx
+                while end_idx < len(ctx.children) and ctx.children[end_idx].getText() != '}':
+                    end_idx += 1
+
+                # Parse options between curly braces
+                option_nodes = ctx.children[start_idx:end_idx]
+                current_key = None
+                prev = None
+                for node in option_nodes:
+                    
+                    text = node.getText()
+                    if text == ':':
+                        continue
+                    # elif text == ',':
+                    #     continue
+                    if current_key is None:
+                        current_key = text
+                    else:
+                        # Parse the value as an expression
+                        value = self.visit(node) if hasattr(node, 'accept') else Node(ctx=ctx, type='Identifier', name=text)
+                        options.append(Node(ctx=ctx,
+                                         type='NameValuePair',
+                                         name=current_key,
+                                         value=value))
+                        current_key = None
+
         if ctxArgs.expressionList():
             args = [self.visit(a) for a in ctxArgs.expressionList().expression()]
-
         elif ctxArgs.nameValueList():
             for nameValue in ctxArgs.nameValueList().nameValue():
                 args.append(self.visit(nameValue.expression()))
@@ -317,9 +408,10 @@ class AstVisitor(SolidityVisitor):
 
         return Node(ctx=ctx,
                     type='FunctionCall',
-                    expression=self.visit(ctx.expression()),
+                    expression=base_expr,
                     arguments=args,
-                    names=names)
+                    names=names,
+                    options=options if options else None)
 
     def visitEmitStatement(self, ctx):
         return Node(ctx=ctx,
@@ -348,6 +440,34 @@ class AstVisitor(SolidityVisitor):
                     name=ctx.identifier().getText(),
                     storageLocation=storageLocation)
 
+    # def visitVariableDeclarationStatement(self, ctx):
+    #     if ctx.variableDeclaration():
+    #         variables = [self.visit(ctx.variableDeclaration())]
+    #     elif ctx.identifierList():
+    #         variables = self.visit(ctx.identifierList())
+    #     elif ctx.variableDeclarationList():
+    #         variables = self.visit(ctx.variableDeclarationList())
+    #     elif ctx.getChild(0).getText() == '(':
+    #         # Handle tuple on the left-hand side
+    #         variables = []
+    #         children = ctx.children[1:-1]  # Remove parentheses
+    #         for child in children:
+    #             if isinstance(child, TerminalNode) and child.getText() == ',':
+    #                 continue
+    #             if hasattr(child, 'accept'):
+    #                 variables.append(self.visit(child))
+    #             else:
+    #                 variables.append(Node(ctx=ctx, type='Identifier', name=child.getText()))
+
+    #     initialValue = None
+
+    #     if ctx.expression():
+    #         initialValue = self.visit(ctx.expression())
+
+    #     return Node(ctx=ctx,
+    #                 type='VariableDeclarationStatement',
+    #                 variables=variables,
+    #                 initialValue=initialValue)
     def visitEventParameter(self, ctx):
         storageLocation = None
 
@@ -975,31 +1095,185 @@ class AstVisitor(SolidityVisitor):
                     name=ctx.pragmaName().getText(),
                     value=ctx.pragmaValue().getText())
 
+    # def visitImportDirective(self, ctx):
+    #     symbol_aliases = {}
+    #     unit_alias = None
+    #     imported_content = None
+
+    #     if len(ctx.importDeclaration()) > 0:
+    #         for item in ctx.importDeclaration():
+    #             try:
+    #                 alias = item.identifier(1).getText()
+    #             except:
+    #                 alias = None
+    #             symbol_aliases[item.identifier(0).getText()] = alias
+
+    #     elif len(ctx.children) == 7:
+    #         unit_alias = ctx.getChild(3).getText()
+
+    #     elif len(ctx.children) == 5:
+    #         unit_alias = ctx.getChild(3).getText()
+
+    #     # Read the content of the imported file
+    #     import_path = ctx.importPath().getText().strip('"')
+    #     imported_content = self._read_imported_file(import_path)
+
+    #     return Node(ctx=ctx,
+    #                 type="ImportDirective",
+    #                 path=import_path,
+    #                 symbolAliases=symbol_aliases,
+    #                 unitAlias=unit_alias,
+    #                 content=imported_content)
+    def get_source_code_from_github(self,import_path):
+    # Convert OpenZeppelin import path to GitHub raw URL
+        if import_path.startswith("@openzeppelin/"):
+            github_url = f"https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/refs/heads/master/{import_path[len('@openzeppelin/'):]}"
+        else:
+            return f"Unsupported import path: {import_path}"
+
+        try:
+            response = requests.get(github_url)
+            if response.status_code == 200:
+                return response.text
+            else:
+                return f"Error fetching source code from GitHub: {response.status_code}"
+        except Exception as e:
+            return f"Error fetching source code from GitHub: {str(e)}"
+
+    # def visitImportDirective(self, ctx):
+    #     symbol_aliases = {}
+    #     unit_alias = None
+
+    #     if len(ctx.importDeclaration()) > 0:
+    #         for item in ctx.importDeclaration():
+    #             try:
+    #                 alias = item.identifier(1).getText()
+    #             except:
+    #                 alias = None
+    #             symbol_aliases[item.identifier(0).getText()] = alias
+
+    #     elif len(ctx.children) == 7:
+    #         unit_alias = ctx.getChild(3).getText()
+
+    #     elif len(ctx.children) == 5:
+    #         unit_alias = ctx.getChild(3).getText()
+
+    #     # Parse the imported file
+    #     import_path = ctx.importPath().getText().strip('"')
+    #     if import_path.startswith("@openzeppelin/"):
+    #         if import_path in self._parsed_files:
+    #             print(f"Warning: Circular import detected for '{import_path}'. Skipping.")
+    #             return None
+    #         self._parsed_files.add(import_path)
+    #         file_content = self.get_source_code_from_github(import_path)
+    #         imported_ast = parse(file_content)
+    #     else:
+    #         imported_ast = self._parse_imported_file(file_content)
+
+    #     #pprint.pprint(f"type: {type(import_path)} {import_path}")
+    #     pprint.pprint(self._parsed_files)
+    #     # Create the ImportDirective node
+    #     import_node = Node(ctx=ctx,
+    #                        type="ImportDirective",
+    #                        path=import_path,
+    #                        symbolAliases=symbol_aliases,
+    #                        unitAlias=unit_alias)
+
+    #     # Merge the imported file's AST into the ImportDirective node
+    #     if imported_ast:
+    #         for key, value in imported_ast.items():
+    #             import_node[key] = value
+
+    #     return import_node
+    
+    
+    
+    # def visitImportDirective(self, ctx):
+    #     symbol_aliases = {}
+    #     unit_alias = None
+
+    #     if len(ctx.importDeclaration()) > 0:
+    #         for item in ctx.importDeclaration():
+    #             try:
+    #                 alias = item.identifier(1).getText()
+    #             except:
+    #                 alias = None
+    #             symbol_aliases[item.identifier(0).getText()] = alias
+
+    #     elif len(ctx.children) in [5, 7]:
+    #         unit_alias = ctx.getChild(3).getText()
+
+    #     # Extract import path
+    #     import_path = ctx.importPath().getText().strip('"')
+
+    #     # Prevent circular imports
+    #     if import_path in self._parsed_files:
+    #         print(f"Warning: Circular import detected for '{import_path}'. Skipping.")
+    #         return None
+
+    #     self._parsed_files.add(import_path)
+
+    #     # Parse the imported file
+    #     imported_ast = None
+    #     if import_path.startswith("@openzeppelin/"):
+    #         file_content = self.get_source_code_from_github(import_path)
+    #         imported_ast = parse(file_content)
+    #     else:
+    #         imported_ast = self._parse_imported_file(import_path)
+
+    #     # Create the ImportDirective node
+    #     import_node = Node(ctx=ctx,
+    #                        type="ImportDirective",
+    #                        path=import_path,
+    #                        symbolAliases=symbol_aliases,
+    #                        unitAlias=unit_alias,
+    #                        importedFile=imported_ast)  # Store imported AST
+
+        #     return import_node
     def visitImportDirective(self, ctx):
         symbol_aliases = {}
         unit_alias = None
 
+        # Handle import declarations
         if len(ctx.importDeclaration()) > 0:
             for item in ctx.importDeclaration():
-
                 try:
                     alias = item.identifier(1).getText()
                 except:
                     alias = None
                 symbol_aliases[item.identifier(0).getText()] = alias
 
-        elif len(ctx.children) == 7:
+        elif len(ctx.children) in [5, 7]:
             unit_alias = ctx.getChild(3).getText()
 
-        elif len(ctx.children) == 5:
-            unit_alias = ctx.getChild(3).getText()
+        # Extract import path
+        import_path = ctx.importPath().getText().strip('"')
 
-        return Node(ctx=ctx,
-                    type="ImportDirective",
-                    path=ctx.importPath().getText().strip('"'),
-                    symbolAliases=symbol_aliases,
-                    unitAlias=unit_alias
-                    )
+        # Prevent circular imports
+        
+
+        # Parse the imported file and get its AST
+        imported_ast = None
+        if import_path.startswith("@openzeppelin/"):
+            file_content = self.get_source_code_from_github(import_path)
+            imported_ast = parse(file_content)
+        else:
+            imported_ast = self._parse_imported_file(import_path)
+      
+        self._parsed_files.add(import_path)
+        # Create ImportDirective node
+        import_node = Node(ctx=ctx,
+                           type="ImportDirective",
+                           path=import_path,
+                           symbolAliases=symbol_aliases,
+                           unitAlias=unit_alias,
+                           content=None)  # Keep content as None
+
+        # Merge imported file's AST into the main AST
+        if imported_ast:
+            import_node["importedFile"] = imported_ast  # Embed imported AST
+
+        return import_node
 
     def visitContractDefinition(self, ctx):
         self._currentContract = ctx.identifier().getText()
@@ -1252,6 +1526,8 @@ def objectify(start_node):
 
         def visitImportDirective(self, node):
             self.imports.append(node)
+            if "importedFile" in node and node["importedFile"]:
+                visit(node["importedFile"], self) 
 
         def visitContractDefinition(self, node):
             self.contracts[node.name] = ObjectifyContractVisitor(node)
