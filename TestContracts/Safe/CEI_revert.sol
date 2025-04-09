@@ -1,46 +1,28 @@
 error ReentrancyError();
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-// import "./Dao.sol";
-struct Hello{
-    string test;
-}
-contract EtherStore  is ReentrancyGuard{
+contract EtherStore  {
 
-    Hello hello1;
+
     int [10] i ;
     int j;
     mapping(address => uint256) balances;
     
-    modifier simpleReentrancy()
-    {
-        (int[10] storage k,uint m ,string storage str1 )= (i,2,hello1.test); 
-        Hello storage hello = hello1;
-        hello.test = "Hello";
-        if(j == 2 )
-        {
-             revert ReentrancyError();
-        }
-        j = 1;
-        _;
-        j = 0;
-        // j++;
-    }
-    function withdraw()  simpleReentrancy external{
+   
+    function withdraw()   external{
         
         
-        require(balances[msg.sender] > 0);
+        if(balances[msg.sender] == 0)
+            revert ReentrancyError();
         
-        // if(i <= 0){
-        //     revert ReentrancyError();
-        // } 
-        //balances[msg.sender]--;
-       
-
-
-        payable (msg.sender).call.value(1)();
+      
+        
         balances[msg.sender]--;
+       
+        msg.sender.call{value: 1}("");
+   
+        
+        // balances[msg.sender]--;
         // else if(false)
         // {
             
@@ -48,8 +30,8 @@ contract EtherStore  is ReentrancyGuard{
         // else
         //     balances[msg.sender] = 1;
 
-        
     }
+    
 
     function getBalance()  public view returns (uint256) {
             

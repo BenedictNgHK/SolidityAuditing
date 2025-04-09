@@ -66,7 +66,7 @@ if __name__ == "__main__":
         sourceCode = get_source_code(sys.argv[1],api_key="QGPYMYKYX481IVTDDFTZZB14PK6REP28U4")
         ast = parser.parse(sourceCode)
     objectified_source_unit = parser.objectify(ast)
-   
+    # pprint.pprint(ast)
     audit  = AuditReentrancy(objectified_source_unit)
     logger = VulnerabilityLogger(sys.argv[1])
     audit.checkReentrancy(logger)

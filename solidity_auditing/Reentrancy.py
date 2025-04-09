@@ -401,13 +401,15 @@ class AuditReentrancy:
         return ret_val
     
     def checkEffectsInteraction(self, node, stateVariablesList,contract,flags=dict(check=False,interaction=True),storageVariable=dict(),protected_state_variables = []) -> bool:
-        
+        statements = []
         if (type(node) is list):
             statements = node
         elif(node.type =='FunctionDefinition'):
             statements = node.body.statements
         elif (node.type == 'Block'):
             statements = node.statements
+        else:
+            statements.append(node)
         
         for index ,expression in enumerate(statements):
             if expression.type == 'VariableDeclarationStatement':
@@ -434,6 +436,7 @@ class AuditReentrancy:
                     self.storageVariableHandler(expression,storageVariable)
                 continue
             if expression.type == 'IfStatement':
+                self.checkEffectsInteraction(expression.condition,contract=contract,stateVariablesList=stateVariablesList,flags=flags,storageVariable=storageVariable,protected_state_variables=protected_state_variables)
                 true_body = None
                 false_body = None
                 
@@ -458,7 +461,6 @@ class AuditReentrancy:
                             flags["check"] = True
                             flags["interaction"] = True
                         continue
-                    pprint.pprint(expression.TrueBody)
                     if "expression" in expression.TrueBody:
                         expressions = [expression.TrueBody.expression]
                     elif "statements" in expression.TrueBody:
@@ -598,6 +600,7 @@ class AuditReentrancy:
                             if import_file.symbolAliases == None:
                                 continue
                             else:
+                                # pprint.pprint(import_file)
                                 for child in import_file.importedFile.children:
                                     if child.type == "ContractDefinition" and import_file.symbolAliases[child.name] == base_name:
                                         base_name = child.name
@@ -621,9 +624,7 @@ class AuditReentrancy:
                 stateVariables = contracts[contract].stateVars
 
             for function in functions.keys():
-                if function == "payOut":
-                    pprint.pprint(f"Contract: {contract} functions:{function}")
-                    pprint.pprint(functions[function]._node.body)
+                
                 if functions[function]._node.isConstructor == True:
                     for expression in functions[function]._node.body.statements:
                         if expression.type == "EmitStatement":

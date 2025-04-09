@@ -1095,35 +1095,7 @@ class AstVisitor(SolidityVisitor):
                     name=ctx.pragmaName().getText(),
                     value=ctx.pragmaValue().getText())
 
-    # def visitImportDirective(self, ctx):
-    #     symbol_aliases = {}
-    #     unit_alias = None
-    #     imported_content = None
 
-    #     if len(ctx.importDeclaration()) > 0:
-    #         for item in ctx.importDeclaration():
-    #             try:
-    #                 alias = item.identifier(1).getText()
-    #             except:
-    #                 alias = None
-    #             symbol_aliases[item.identifier(0).getText()] = alias
-
-    #     elif len(ctx.children) == 7:
-    #         unit_alias = ctx.getChild(3).getText()
-
-    #     elif len(ctx.children) == 5:
-    #         unit_alias = ctx.getChild(3).getText()
-
-    #     # Read the content of the imported file
-    #     import_path = ctx.importPath().getText().strip('"')
-    #     imported_content = self._read_imported_file(import_path)
-
-    #     return Node(ctx=ctx,
-    #                 type="ImportDirective",
-    #                 path=import_path,
-    #                 symbolAliases=symbol_aliases,
-    #                 unitAlias=unit_alias,
-    #                 content=imported_content)
     def get_source_code_from_github(self,import_path):
     # Convert OpenZeppelin import path to GitHub raw URL
         if import_path.startswith("@openzeppelin/"):
@@ -1146,6 +1118,7 @@ class AstVisitor(SolidityVisitor):
 
     #     if len(ctx.importDeclaration()) > 0:
     #         for item in ctx.importDeclaration():
+
     #             try:
     #                 alias = item.identifier(1).getText()
     #             except:
@@ -1158,83 +1131,20 @@ class AstVisitor(SolidityVisitor):
     #     elif len(ctx.children) == 5:
     #         unit_alias = ctx.getChild(3).getText()
 
-    #     # Parse the imported file
-    #     import_path = ctx.importPath().getText().strip('"')
-    #     if import_path.startswith("@openzeppelin/"):
-    #         if import_path in self._parsed_files:
-    #             print(f"Warning: Circular import detected for '{import_path}'. Skipping.")
-    #             return None
-    #         self._parsed_files.add(import_path)
-    #         file_content = self.get_source_code_from_github(import_path)
-    #         imported_ast = parse(file_content)
-    #     else:
-    #         imported_ast = self._parse_imported_file(file_content)
+    #     return Node(ctx=ctx,
+    #                 type="ImportDirective",
+    #                 path=ctx.importPath().getText().strip('"'),
+    #                 symbolAliases=symbol_aliases,
+    #                 unitAlias=unit_alias
+    #                 )
 
-    #     #pprint.pprint(f"type: {type(import_path)} {import_path}")
-    #     pprint.pprint(self._parsed_files)
-    #     # Create the ImportDirective node
-    #     import_node = Node(ctx=ctx,
-    #                        type="ImportDirective",
-    #                        path=import_path,
-    #                        symbolAliases=symbol_aliases,
-    #                        unitAlias=unit_alias)
-
-    #     # Merge the imported file's AST into the ImportDirective node
-    #     if imported_ast:
-    #         for key, value in imported_ast.items():
-    #             import_node[key] = value
-
-    #     return import_node
     
-    
-    
-    # def visitImportDirective(self, ctx):
-    #     symbol_aliases = {}
-    #     unit_alias = None
-
-    #     if len(ctx.importDeclaration()) > 0:
-    #         for item in ctx.importDeclaration():
-    #             try:
-    #                 alias = item.identifier(1).getText()
-    #             except:
-    #                 alias = None
-    #             symbol_aliases[item.identifier(0).getText()] = alias
-
-    #     elif len(ctx.children) in [5, 7]:
-    #         unit_alias = ctx.getChild(3).getText()
-
-    #     # Extract import path
-    #     import_path = ctx.importPath().getText().strip('"')
-
-    #     # Prevent circular imports
-    #     if import_path in self._parsed_files:
-    #         print(f"Warning: Circular import detected for '{import_path}'. Skipping.")
-    #         return None
-
-    #     self._parsed_files.add(import_path)
-
-    #     # Parse the imported file
-    #     imported_ast = None
-    #     if import_path.startswith("@openzeppelin/"):
-    #         file_content = self.get_source_code_from_github(import_path)
-    #         imported_ast = parse(file_content)
-    #     else:
-    #         imported_ast = self._parse_imported_file(import_path)
-
-    #     # Create the ImportDirective node
-    #     import_node = Node(ctx=ctx,
-    #                        type="ImportDirective",
-    #                        path=import_path,
-    #                        symbolAliases=symbol_aliases,
-    #                        unitAlias=unit_alias,
-    #                        importedFile=imported_ast)  # Store imported AST
-
-        #     return import_node
     def visitImportDirective(self, ctx):
         symbol_aliases = {}
         unit_alias = None
-
-        # Handle import declarations
+        imported_content = None
+        imported_ast = None
+    
         if len(ctx.importDeclaration()) > 0:
             for item in ctx.importDeclaration():
                 try:
@@ -1242,39 +1152,41 @@ class AstVisitor(SolidityVisitor):
                 except:
                     alias = None
                 symbol_aliases[item.identifier(0).getText()] = alias
-
-        elif len(ctx.children) in [5, 7]:
+        elif len(ctx.children) == 7:
             unit_alias = ctx.getChild(3).getText()
-
-        # Extract import path
+        elif len(ctx.children) == 5:
+            unit_alias = ctx.getChild(3).getText()
+    
+        # Get the import path
         import_path = ctx.importPath().getText().strip('"')
-
-        # Prevent circular imports
         
-
-        # Parse the imported file and get its AST
-        imported_ast = None
-        if import_path.startswith("@openzeppelin/"):
-            file_content = self.get_source_code_from_github(import_path)
-            imported_ast = parse(file_content)
+        # Handle GitHub imports
+        if import_path.startswith('@'):
+            imported_content = self.get_source_code_from_github(import_path)
+            if imported_content and not imported_content.startswith("Error"):
+                imported_ast = parse(imported_content)
         else:
-            imported_ast = self._parse_imported_file(import_path)
-      
-        self._parsed_files.add(import_path)
-        # Create ImportDirective node
+            # Handle local file imports
+            try:
+                imported_content = self._read_imported_file(import_path)
+                if imported_content:
+                    imported_ast = parse(imported_content)
+            except Exception as e:
+                print(f"Warning: Error parsing imported file '{import_path}': {str(e)}")
+    
+        # Create the import node
         import_node = Node(ctx=ctx,
                            type="ImportDirective",
                            path=import_path,
                            symbolAliases=symbol_aliases,
                            unitAlias=unit_alias,
-                           content=None)  # Keep content as None
-
-        # Merge imported file's AST into the main AST
+                           content=imported_content)
+        
+        # Store the AST if available
         if imported_ast:
-            import_node["importedFile"] = imported_ast  # Embed imported AST
-
+            import_node['importedFile'] = imported_ast
+    
         return import_node
-
     def visitContractDefinition(self, ctx):
         self._currentContract = ctx.identifier().getText()
         return Node(ctx=ctx,
