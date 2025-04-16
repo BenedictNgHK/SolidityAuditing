@@ -19,7 +19,7 @@ contract EtherStore  {
         balances[msg.sender]--;
        
         msg.sender.call{value: 1}("");
-   
+
         
         balances[msg.sender]--;
         // else if(false)

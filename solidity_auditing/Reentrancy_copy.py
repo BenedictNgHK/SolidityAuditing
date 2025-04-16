@@ -400,8 +400,7 @@ class AuditReentrancy:
                         ret_val = True
         return ret_val
     
-    def checkEffectsInteraction(self, node, stateVariablesList,contract,flags=dict(check=False,effects=False,interaction=False),storageVariable=dict(),protected_state_variables = []) -> bool:
-        
+    def checkEffectsInteraction(self, node, stateVariablesList,contract,flags=dict(check=False,interaction=True),storageVariable=dict(),protected_state_variables = []) -> bool:
         statements = []
         if (type(node) is list):
             statements = node
@@ -426,11 +425,10 @@ class AuditReentrancy:
                         if hasattr(expression.initialValue.expression,'type') and self.ifInteraction(expression.initialValue.expression):
                             if_interaction = True
                     if if_interaction:
-                        if flags["check"] and flags["effects"]:
-                            protected_state_variables.clear()
-                            flags["interaction"] = True
-                            flags["check"] = False
-                            flags["effects"] = False
+                        if flags["interaction"] == True:
+                            return False
+                        protected_state_variables.clear()
+                        flags["interaction"] = True
                     else:
                         self.functionCallHandlerCEI(expression, stateVariablesList,contract,flags,storageVariable=storageVariable,protected_state_variables=protected_state_variables)
                         self.storageVariableHandler(expression,storageVariable)
@@ -449,13 +447,19 @@ class AuditReentrancy:
                 storage_variables_true_body = copy.deepcopy(storageVariable)
                 storage_variables_false_body = copy.deepcopy(storageVariable)
                 if isinstance(expression.TrueBody,dict) and ("statements" or "expression" in expression.TrueBody):
-                   
+                    # len_first = len(protected_state_variables)
+                    #     # self.addProtectedVariables(expression.condition,protected_state_variables, stateVariablesList)
+                    # len_second = len(protected_state_variables)
+                    # if (len_first != len_second):
+                    #     flags["check"] = True
+                    #     flags["interaction"] = True
                     if expression.TrueBody.type == "RevertStatement":
                         len_first = len(protected_state_variables)
                         self.addProtectedVariables(expression.condition,protected_state_variables, stateVariablesList)
                         len_second = len(protected_state_variables)
                         if (len_first != len_second):
                             flags["check"] = True
+                            flags["interaction"] = True
                         continue
                     if "expression" in expression.TrueBody:
                         expressions = [expression.TrueBody.expression]
@@ -476,7 +480,7 @@ class AuditReentrancy:
                             len_second = len(protected_state_variables)
                             if (len_first != len_second):
                                 flags["check"] = True
-                                
+                                flags["interaction"] = True
                             continue
                         i = index+1
                         while(i < len(statements)):
@@ -516,51 +520,56 @@ class AuditReentrancy:
             if isinstance(expression, dict) and 'expression' in expression:
                 # Unary Operation
                 if expression.expression.type == 'UnaryOperation':
-                    if(flags["interaction"]):
-                            return False
                     if expression.expression.subExpression.type == 'Identifier':
                         
-                        if expression.expression.subExpression.name not in protected_state_variables and (expression.expression.subExpression.name in stateVariablesList or expression.expression.subExpression.name in storageVariable):
+                        if expression.expression.subExpression.name not in protected_state_variables and expression.expression.subExpression.name in stateVariablesList:
                             return False
                         
-                    elif expression.expression.subExpression.type == 'IndexAccess' and (expression.expression.subExpression not in protected_state_variables and expression.expression.subExpression.base.name in stateVariablesList or expression.expression.subExpression.base.name in storageVariable):
+                    if expression.expression.subExpression.type == 'IndexAccess' and expression.expression.subExpression not in protected_state_variables and expression.expression.subExpression.base.name in stateVariablesList:
                     # if expression.expression.left.type == 'IndexAccess' and expression.expression.left.base.name in stateVariablesList:
                         
                         return False
-                    else:
-                        
-                        flags["effects"] = True
+                    if flags["interaction"] == True and (expression.expression.subExpression.type == 'IndexAccess' or expression.expression.subExpression.type == 'Identifier'):
+                        if expression.expression.subExpression.type == 'IndexAccess' and (expression.expression.subExpression.base.name in stateVariablesList or expression.expression.subExpression.base.name in storageVariable):
+                            flags["interaction"] = False
+                        elif expression.expression.subExpression.type == 'Identifier' and (expression.expression.subExpression.name in stateVariablesList or expression.expression.subExpression.name in storageVariable):
+                            flags["interaction"] = False
                 # Binary Operation
                 if expression.expression.type == 'BinaryOperation':
-                    if(flags["interaction"]):
-                            return False
                     if expression.expression.left.type == 'Identifier':
                         
-                        if expression.expression.left.name not in protected_state_variables and (expression.expression.left.name in stateVariablesList or expression.expression.left.name in storageVariable):
+                        if expression.expression.left.name not in protected_state_variables and expression.expression.left.name in stateVariablesList:
                             return False
-                        else:
-                            flags["effects"] = True
-                    if expression.expression.left.type == 'IndexAccess' and "name" in expression.expression.left.base and (expression.expression.left not in protected_state_variables and (expression.expression.left.base.name in stateVariablesList or expression.expression.left.base.name in storageVariable)):
+                        elif isinstance(expression.expression.right,dict) and 'expression' in expression.expression.right:
+                            if expression.expression.right.expression.memberName == 'send':
+                                if flags["interaction"] == True:
+                                    return False
+                                protected_state_variables.clear()
+                                flags["interaction"] = True
+                      
+                                continue
+                    if expression.expression.left.type == 'IndexAccess' and "name" in expression.expression.left.base and (expression.expression.left not in protected_state_variables and expression.expression.left.base.name in stateVariablesList):
                         
                         return False
                   
-                    else:
-                        flags["effects"] = True
-                        
+                    if flags["interaction"] == True and (expression.expression.left.type == 'IndexAccess' or expression.expression.left.type == 'Identifier'):
+                        if expression.expression.left.type == 'IndexAccess' and "name" in expression.expression.left and (expression.expression.left.base.name in stateVariablesList or expression.expression.left.base.name in storageVariable):
+                            flags["interaction"] = False
+                        elif expression.expression.left.type == 'Identifier' and (expression.expression.left.name in stateVariablesList or expression.expression.left.name in storageVariable):
+                            flags["interaction"] = False
                 if isinstance(expression, dict) and 'expression' in expression.expression and expression.expression.type == 'FunctionCall':
                     
                     if isinstance(expression.expression.expression,list) and self.ifInteraction(expression.expression.expression[0]):
+                        if flags["interaction"] == True:
+                            return False
                         protected_state_variables.clear()
                         flags["interaction"] = True
-                        flags["check"] = False
-                        flags["effects"] = False
-                        
                     if isinstance(expression, dict) and 'type' in expression.expression.expression:
                         if expression.expression.expression.type == 'MemberAccess' and self.ifInteraction(expression.expression.expression):
+                            if flags["interaction"] == True:
+                                return False
                             protected_state_variables.clear()
                             flags["interaction"] = True
-                            flags["check"] = False
-                            flags["effects"] = False
                     
                     if isinstance(expression, dict) and 'name' in expression.expression.expression and expression.expression.expression.type == 'Identifier' and expression.expression.expression.name == 'require':
                         len_first = len(protected_state_variables)
@@ -568,8 +577,8 @@ class AuditReentrancy:
                         len_second = len(protected_state_variables)
                         if (len_first != len_second):
                             flags["check"] = True
-                            
-        return  flags["interaction"]
+                            flags["interaction"] = True
+        return  flags["check"] and flags["interaction"]
     def getStateVarValue(self,node, stateVars):
         if node.type == "Identifier" and node.name in stateVars:
             return stateVars[node.name].expression
