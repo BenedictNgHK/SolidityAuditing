@@ -1,0 +1,33 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/ReentrancyAttack.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 3,
+      "vulnerable_functions": 1,
+      "safe_functions": 2,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "withdraw",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 4,
+        "pattern": "Interaction before Effects complete",
+        "contract": "ReentrancyAttack"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "ReentrancyAttack.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ReentrancyAttack.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

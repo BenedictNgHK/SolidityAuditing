@@ -1,0 +1,39 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/safe/FalsePositive.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 6,
+      "vulnerable_functions": 0,
+      "safe_functions": 6,
+      "has_reentrancy_risk": false
+    },
+    "vulnerabilities": [],
+    "safe_patterns": [
+      {
+        "function": "FalsePositive.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "FalsePositive.notify",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "FalsePositive.checkBalance",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "FalsePositive.withdrawAndNotify",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "FalsePositive.validateAddress",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "FalsePositive.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

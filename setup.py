@@ -1,15 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''
+"""
+Setup script for Solidity Auditing Tool
+"""
 
-deps (requires up2date version):
-    *) pip install --upgrade pip wheel setuptools twine
-publish to pypi w/o having to convert Readme.md to RST:
-    1) #> python setup.py sdist bdist_wheel
-    2) #> twine upload dist/*   #<specify bdist_wheel version to upload>; #optional --repository <testpypi> or  --repository-url <testpypi-url>
-
-'''
 import os
 from setuptools import setup, find_packages
 
@@ -18,25 +13,51 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-version = "0.1.1"
-name = "solidity-parser"
+version = "1.0.0"
+name = "solidity-auditing"
 
 setup(
     name=name,
     version=version,
-    packages=find_packages(),
-    author="tintinweb",
-    author_email="tintinweb@oststrom.com",
+    packages=find_packages(exclude=['tests', 'examples', 'docs', 'scripts']),
+    author="Solidity Auditing Team",
+    author_email="",
     description=(
-        "A Solidity parser for Python built on top of a robust ANTLR4 grammar"),
+        "Advanced Solidity smart contract reentrancy vulnerability detection "
+        "using CEI (Checks-Effects-Interactions) pattern analysis"),
     license="MIT",
-    keywords=["solidity","parser","antlr"],
-    url="https://github.com/consensys/python-%s/"%name,
-    download_url="https://github.com/consensys/python-%s/tarball/v%s"%(name, version),
+    keywords=["solidity", "auditing", "security", "reentrancy", "blockchain", "ethereum"],
+    url="https://github.com/BenedictNgHK/SolidityAuditing",
     long_description=read("README.md") if os.path.isfile("README.md") else "",
     long_description_content_type='text/markdown',
-    #python setup.py register -r https://testpypi.python.org/pypi
-    install_requires=["antlr4-python3-runtime==4.9.3"],
-    #test_suite="nose.collector",
-    #tests_require=["nose"],
+    install_requires=[
+        "requests",
+        "antlr4-python3-runtime>=4.9.3",
+    ],
+    extras_require={
+        'dev': [
+            'pytest',
+            'pytest-cov',
+            'black',
+            'flake8',
+        ],
+    },
+    entry_points={
+        'console_scripts': [
+            'solidity-audit=solidity_auditing.cli.commands:main',
+        ],
+    },
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Topic :: Security',
+        'Topic :: Software Development :: Quality Assurance',
+    ],
+    python_requires='>=3.8',
 )

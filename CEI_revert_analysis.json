@@ -1,0 +1,23 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/safe/CEI_revert.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 2,
+      "vulnerable_functions": 0,
+      "safe_functions": 2,
+      "has_reentrancy_risk": false
+    },
+    "vulnerabilities": [],
+    "safe_patterns": [
+      {
+        "function": "EtherStore.withdraw",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "EtherStore.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

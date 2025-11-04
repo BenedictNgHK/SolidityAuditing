@@ -1,0 +1,31 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/safe/SafeDelegateCall.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 4,
+      "vulnerable_functions": 0,
+      "safe_functions": 4,
+      "has_reentrancy_risk": false
+    },
+    "vulnerabilities": [],
+    "safe_patterns": [
+      {
+        "function": "SafeDelegateCall.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "SafeDelegateCall.execute",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "SafeDelegateCall.upgrade",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "SafeDelegateCall.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

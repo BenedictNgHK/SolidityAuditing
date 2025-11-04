@@ -1,0 +1,23 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/safe/SimpleGuard.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 2,
+      "vulnerable_functions": 0,
+      "safe_functions": 2,
+      "has_reentrancy_risk": false
+    },
+    "vulnerabilities": [],
+    "safe_patterns": [
+      {
+        "function": "EtherStore.withdraw",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "EtherStore.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

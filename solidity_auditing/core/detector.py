@@ -8,7 +8,7 @@ the order of operations within Solidity functions.
 import re
 import ast
 from typing import List, Dict, Tuple, Set
-from simple_solidity_parser import SimpleSolidityParser
+from .parser import SimpleSolidityParser
 
 
 class CEIVulnerabilityDetector:

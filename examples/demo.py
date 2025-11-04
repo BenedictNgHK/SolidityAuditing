@@ -5,7 +5,7 @@ This script demonstrates that the reentrancy detection algorithm works correctly
 and passes all test cases when parser issues are resolved.
 """
 
-from advanced_cei_detector import CEIVulnerabilityDetector
+from solidity_auditing import CEIVulnerabilityDetector
 import os
 
 def demonstrate_cei_detection():
@@ -18,16 +18,16 @@ def demonstrate_cei_detection():
     # Test all our sample contracts
     test_cases = [
         # Safe contracts (should NOT be flagged)
-        ("TestContracts/Safe/CEIGuard.sol", False, "CEI-compliant with reentrancy guard"),
-        ("TestContracts/Safe/SafeDelegateCall.sol", False, "Safe delegatecall usage"),
-        ("TestContracts/Safe/FalsePositive.sol", False, "External calls without state changes"),
+        ("tests/contracts/safe/CEIGuard.sol", False, "CEI-compliant with reentrancy guard"),
+        ("tests/contracts/safe/SafeDelegateCall.sol", False, "Safe delegatecall usage"),
+        ("tests/contracts/safe/FalsePositive.sol", False, "External calls without state changes"),
 
         # Unsafe contracts (SHOULD be flagged)
-        ("TestContracts/Unsafe/ReentrancyAttack.sol", True, "Classic external call before state update"),
-        ("TestContracts/Unsafe/ComplexReentrancy.sol", True, "Multiple external calls with state changes"),
-        ("TestContracts/Unsafe/DelegateCallReentrancy.sol", True, "Unsafe delegatecall"),
-        ("TestContracts/Unsafe/DAO.sol", True, "Original DAO exploit"),
-        ("TestContracts/Unsafe/IndirectReentrancy.sol", True, "Cross-contract reentrancy"),
+        ("tests/contracts/vulnerable/ReentrancyAttack.sol", True, "Classic external call before state update"),
+        ("tests/contracts/vulnerable/ComplexReentrancy.sol", True, "Multiple external calls with state changes"),
+        ("tests/contracts/vulnerable/DelegateCallReentrancy.sol", True, "Unsafe delegatecall"),
+        ("tests/contracts/vulnerable/DAO.sol", True, "Original DAO exploit"),
+        ("tests/contracts/vulnerable/IndirectReentrancy.sol", True, "Cross-contract reentrancy"),
     ]
 
     results = []

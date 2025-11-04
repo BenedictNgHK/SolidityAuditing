@@ -1,0 +1,41 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/IndirectReentrancy.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 5,
+      "vulnerable_functions": 1,
+      "safe_functions": 4,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "callback",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 4,
+        "pattern": "Interaction before Effects complete",
+        "contract": "IndirectReentrancy"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "IndirectReentrancy.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "IndirectReentrancy.processPayment",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "IndirectReentrancy.getBalance",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "IndirectReentrancy.process",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

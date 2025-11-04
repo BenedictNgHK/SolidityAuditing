@@ -1,0 +1,180 @@
+{
+  "input": "0x0c6C80D2061afA35E160F3799411d83BDEEA0a5A",
+  "timestamp": "1762286714.4412346",
+  "analysis": {
+    "summary": {
+      "total_functions": 39,
+      "vulnerable_functions": 2,
+      "safe_functions": 37,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "implementation",
+        "type": "UNSAFE_DELEGATECALL",
+        "description": "Delegatecall without proper input validation",
+        "severity": "CRITICAL",
+        "pattern": "Unsafe delegatecall usage",
+        "contract": "ERC1967Proxy"
+      },
+      {
+        "function": "functionDelegateCall",
+        "type": "UNSAFE_DELEGATECALL",
+        "description": "Delegatecall without proper input validation",
+        "severity": "CRITICAL",
+        "pattern": "Unsafe delegatecall usage",
+        "contract": "ERC1967Proxy"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "ERC1967Proxy.initialize",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._implementation",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.deployMinimal",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.deployProxy",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.deployCode",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.getDeploymentAddress",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._deployProxy",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._deployCode",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._getSalt",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._delegate",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._beforeFallback",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._getImplementation",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._setImplementation",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._upgradeTo",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._upgradeToAndCall",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._upgradeToAndCallSecure",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._getAdmin",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._setAdmin",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._changeAdmin",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._getBeacon",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._setBeacon",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._upgradeBeaconToAndCall",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy._throwError",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.tryRecover",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.recover",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.toEthSignedMessageHash",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.toTypedDataHash",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.isContract",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.sendValue",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.functionCall",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.functionCallWithValue",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.functionStaticCall",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.verifyCallResult",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.getAddressSlot",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.getBooleanSlot",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.getBytes32Slot",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ERC1967Proxy.getUint256Slot",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

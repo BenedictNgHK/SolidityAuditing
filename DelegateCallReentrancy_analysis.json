@@ -1,0 +1,37 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/DelegateCallReentrancy.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 4,
+      "vulnerable_functions": 1,
+      "safe_functions": 3,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "execute",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 8,
+        "pattern": "Interaction before Effects complete",
+        "contract": "DelegateCallReentrancy"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "DelegateCallReentrancy.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "DelegateCallReentrancy.upgrade",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "DelegateCallReentrancy.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

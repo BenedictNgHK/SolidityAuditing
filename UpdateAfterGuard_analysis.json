@@ -1,0 +1,29 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/UpdateAfterGuard.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 2,
+      "vulnerable_functions": 1,
+      "safe_functions": 1,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "withdraw",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 10,
+        "pattern": "Interaction before Effects complete",
+        "contract": "EtherStore"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "EtherStore.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

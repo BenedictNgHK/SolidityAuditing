@@ -13,7 +13,8 @@ from pathlib import Path
 
 class ReentrancyTestSuite:
     def __init__(self):
-        self.project_root = Path("/Users/wuyuze/Desktop/FYP/SolidityAuditing")
+        # Use current directory dynamically for portability
+        self.project_root = Path(__file__).parent.parent
         self.test_results = {
             "safe_contracts": [],
             "unsafe_contracts": [],
@@ -23,8 +24,8 @@ class ReentrancyTestSuite:
 
     def get_test_files(self):
         """Get all test contract files"""
-        safe_files = glob.glob(str(self.project_root / "TestContracts" / "Safe" / "*.sol"))
-        unsafe_files = glob.glob(str(self.project_root / "TestContracts" / "Unsafe" / "*.sol"))
+        safe_files = glob.glob(str(self.project_root / "tests" / "contracts" / "safe" / "*.sol"))
+        unsafe_files = glob.glob(str(self.project_root / "tests" / "contracts" / "vulnerable" / "*.sol"))
         return safe_files, unsafe_files
 
     def get_etherscan_addresses(self):
@@ -334,7 +335,7 @@ class ReentrancyTestSuite:
                 print(f"   - {test_type}: {name} - {reason}")
 
         # Save detailed results
-        with open(self.project_root / "test_results.json", "w") as f:
+        with open(self.project_root / "tests" / "test_results.json", "w") as f:
             json.dump(self.test_results, f, indent=2)
 
         print(f"\n💾 Detailed results saved to: test_results.json")

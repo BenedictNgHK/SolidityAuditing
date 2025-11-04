@@ -1,0 +1,206 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/DAO.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 38,
+      "vulnerable_functions": 4,
+      "safe_functions": 34,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "createTokenProxy",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 6,
+        "pattern": "Interaction before Effects complete",
+        "contract": "TokenInterface"
+      },
+      {
+        "function": "refund",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 8,
+        "pattern": "Interaction before Effects complete",
+        "contract": "TokenInterface"
+      },
+      {
+        "function": "executeProposal",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 28,
+        "pattern": "Interaction before Effects complete",
+        "contract": "TokenInterface"
+      },
+      {
+        "function": "executeProposal",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 49,
+        "pattern": "Interaction before Effects complete",
+        "contract": "TokenInterface"
+      },
+      {
+        "function": "executeProposal",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 60,
+        "pattern": "Interaction before Effects complete",
+        "contract": "TokenInterface"
+      },
+      {
+        "function": "newContract",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 4,
+        "pattern": "Interaction before Effects complete",
+        "contract": "TokenInterface"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "TokenInterface.balanceOf",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.transfer",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "TokenInterface.transferFrom",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "TokenInterface.approve",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.allowance",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.payOut",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.ManagedAccount",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.TokenCreation",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.divisor",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.receiveEther",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.DAO",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.newProposal",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.checkProposalCode",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.vote",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "TokenInterface.closeProposal",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.splitDAO",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "TokenInterface.retrieveDAOReward",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.getMyReward",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.withdrawRewardFor",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.transferWithoutReward",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.transferFromWithoutReward",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.transferPaidOut",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.changeProposalDeposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.changeAllowedRecipients",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.isRecipientAllowed",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.actualBalance",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.minQuorum",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.halveMinQuorum",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.createNewDAO",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.numberOfProposals",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.getNewDAOAddress",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "TokenInterface.isBlocked",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "TokenInterface.unblockMe",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "TokenInterface.createDAO",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

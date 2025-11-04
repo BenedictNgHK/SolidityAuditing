@@ -1,0 +1,33 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/DumbDao.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 3,
+      "vulnerable_functions": 1,
+      "safe_functions": 2,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "withdraw",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 7,
+        "pattern": "Interaction before Effects complete",
+        "contract": "dumbDAO"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "dumbDAO.buyTokens",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "dumbDAO.transferTokens",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

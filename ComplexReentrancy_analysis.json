@@ -1,0 +1,37 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/vulnerable/ComplexReentrancy.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 4,
+      "vulnerable_functions": 1,
+      "safe_functions": 3,
+      "has_reentrancy_risk": true
+    },
+    "vulnerabilities": [
+      {
+        "function": "claimBonus",
+        "type": "CEI_VIOLATION",
+        "description": "External call before state modification completion",
+        "severity": "HIGH",
+        "line": 5,
+        "pattern": "Interaction before Effects complete",
+        "contract": "ComplexReentrancy"
+      }
+    ],
+    "safe_patterns": [
+      {
+        "function": "ComplexReentrancy.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ComplexReentrancy.transferAndCall",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "ComplexReentrancy.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}

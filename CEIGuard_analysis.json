@@ -1,0 +1,31 @@
+{
+  "input": "/Users/wuyuze/Desktop/FYP/SolidityAuditing/tests/contracts/safe/CEIGuard.sol",
+  "timestamp": null,
+  "analysis": {
+    "summary": {
+      "total_functions": 4,
+      "vulnerable_functions": 0,
+      "safe_functions": 4,
+      "has_reentrancy_risk": false
+    },
+    "vulnerabilities": [],
+    "safe_patterns": [
+      {
+        "function": "CEIGuard.deposit",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "CEIGuard.withdraw",
+        "reason": "Has reentrancy guard"
+      },
+      {
+        "function": "CEIGuard.safeWithdraw",
+        "reason": "CEI compliant"
+      },
+      {
+        "function": "CEIGuard.getBalance",
+        "reason": "CEI compliant"
+      }
+    ]
+  }
+}
