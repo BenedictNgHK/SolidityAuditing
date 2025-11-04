@@ -1,7 +1,9 @@
-from solidity_parser import parser
+import sys
+import os
+sys.path.append(os.path.dirname(__file__) + '/..')
+from advanced_cei_detector import CEIVulnerabilityDetector
 import pprint
 import copy
-import solidity_parser
 class AuditReentrancy:
     def __init__(self, node):
         self.node = node
@@ -416,6 +418,8 @@ class AuditReentrancy:
             statements.append(node)
         
         for index ,expression in enumerate(statements):
+            if expression is None:
+                continue
             if expression.type == 'VariableDeclarationStatement':
                 
                 if expression.initialValue != None and expression.initialValue.type == "FunctionCall":
@@ -441,13 +445,17 @@ class AuditReentrancy:
                     self.storageVariableHandler(expression,storageVariable)
                 continue
             if expression.type == 'IfStatement':
+                # The if condition itself acts as a check
+                flags_if_body = copy.deepcopy(flags)
+                flags_if_body["check"] = True  # If statement provides conditional protection
+
                 self.checkEffectsInteraction(expression.condition,contract=contract,stateVariablesList=stateVariablesList,flags=flags,storageVariable=storageVariable,protected_state_variables=protected_state_variables)
                 true_body = None
                 false_body = None
-                
+
                 protected_state_variables_true_body = copy.deepcopy(protected_state_variables)
                 protected_state_variables_false_body = copy.deepcopy(protected_state_variables)
-                flags_true_body = copy.deepcopy(flags)
+                flags_true_body = copy.deepcopy(flags_if_body)  # Use flags with check=True for if body
                 flags_false_body = copy.deepcopy(flags)
                 storage_variables_true_body = copy.deepcopy(storageVariable)
                 storage_variables_false_body = copy.deepcopy(storageVariable)
@@ -487,7 +495,14 @@ class AuditReentrancy:
                             i += 1
                     else:
                         expressions = []
-                    true_body = self.checkEffectsInteraction(expressions,stateVariablesList,contract,flags_true_body,storageVariable=storage_variables_true_body,protected_state_variables=protected_state_variables_true_body)        
+                    true_body_result = self.checkEffectsInteraction(expressions,stateVariablesList,contract,flags_true_body,storageVariable=storage_variables_true_body,protected_state_variables=protected_state_variables_true_body)
+                    # If the if body is not vulnerable (returns False), then the if statement provides protection
+                    # So we don't set interaction/effects flags at the function level
+                    if not true_body_result:
+                        pass  # Protected by the if condition
+                    else:
+                        # If the if body is vulnerable, then the whole function is vulnerable
+                        return True        
                     
                 if isinstance(expression.FalseBody,dict) and ("statements" or "expression" in expression.FalseBody):
                    
@@ -538,7 +553,7 @@ class AuditReentrancy:
                     if(flags["interaction"]):
                             return False
                     if expression.expression.left.type == 'Identifier':
-                        
+
                         if expression.expression.left.name not in protected_state_variables and (expression.expression.left.name in stateVariablesList or expression.expression.left.name in storageVariable):
                             return False
                         else:
@@ -551,38 +566,56 @@ class AuditReentrancy:
                         flags["effects"] = True
                         
                 if isinstance(expression, dict) and 'expression' in expression.expression and expression.expression.type == 'FunctionCall':
-                    
+
                     if isinstance(expression.expression.expression,list) and self.ifInteraction(expression.expression.expression[0]):
-                        protected_state_variables.clear()
+                        # External call detected - this is an interaction
                         flags["interaction"] = True
-                        flags["check"] = False
-                        flags["effects"] = False
-                        
+
                     if isinstance(expression, dict) and 'type' in expression.expression.expression:
                         if expression.expression.expression.type == 'MemberAccess' and self.ifInteraction(expression.expression.expression):
-                            protected_state_variables.clear()
+                            # External call detected - this is an interaction
                             flags["interaction"] = True
-                            flags["check"] = False
-                            flags["effects"] = False
-                    
+
                     if isinstance(expression, dict) and 'name' in expression.expression.expression and expression.expression.expression.type == 'Identifier' and expression.expression.expression.name == 'require':
                         len_first = len(protected_state_variables)
                         self.addProtectedVariables(expression.expression.arguments[0],protected_state_variables, stateVariablesList)
                         len_second = len(protected_state_variables)
                         if (len_first != len_second):
                             flags["check"] = True
-                            
-        return  flags["interaction"]
+
+        # CEI violation: interaction happened before effects were completed
+        # Only vulnerable if we have both interactions AND unprotected effects
+        return flags["interaction"] and flags["effects"] and not flags["check"]
     def getStateVarValue(self,node, stateVars):
         if node.type == "Identifier" and node.name in stateVars:
             return stateVars[node.name].expression
                             
         else: 
             return node
-    def checkReentrancy(self, logger):
+    def checkReentrancy(self, logger, file_path=None):
+        """
+        Enhanced reentrancy checking using advanced CEI pattern detection.
+        """
+        # Use advanced detector for file-based analysis
+        if file_path and os.path.exists(file_path):
+            detector = CEIVulnerabilityDetector()
+            analysis = detector.analyze_contract(file_path)
+
+            if analysis['summary']['has_reentrancy_risk']:
+                for vuln in analysis['vulnerabilities']:
+                    logger.logVulnerability(
+                        contract_name=vuln.get('contract', 'Unknown'),
+                        function_name=vuln['function'],
+                        vulneralbility=f"{self.vulnerability}: {vuln['description']}"
+                    )
+
+            return analysis['summary']['has_reentrancy_risk']
+
+        # Fallback to original AST-based analysis for complex inheritance
         contracts = self.node.contracts
-        
+
         for contract in contracts:
+            # Handle inheritance
             if len(contracts[contract]._node.baseContracts) != 0:
                 for base_contract in contracts[contract]._node.baseContracts:
                     base_name = base_contract.baseName.namePath
@@ -594,11 +627,11 @@ class AuditReentrancy:
                             if import_file.symbolAliases == None:
                                 continue
                             else:
-                                # pprint.pprint(import_file)
                                 for child in import_file.importedFile.children:
                                     if child.type == "ContractDefinition" and import_file.symbolAliases[child.name] == base_name:
                                         base_name = child.name
-                    
+
+                    # Copy inherited functions, modifiers, and state variables
                     for function in contracts[base_name].functions:
                         if function not in contracts[contract].functions:
                             contracts[contract].functions[function] = contracts[base_name].functions[function]
@@ -612,13 +645,12 @@ class AuditReentrancy:
                             contracts[contract].stateVars[stateVar] = contracts[base_name].stateVars[stateVar]
 
             functions = contracts[contract].functions
-            
+
             if hasattr(contracts[contract], 'stateVars'):
-                
                 stateVariables = contracts[contract].stateVars
 
             for function in functions.keys():
-                
+                # Handle constructor initialization
                 if functions[function]._node.isConstructor == True:
                     for expression in functions[function]._node.body.statements:
                         if expression.type == "EmitStatement":
@@ -626,21 +658,23 @@ class AuditReentrancy:
                         right = self.getStateVarValue(expression.expression.right,contracts[contract].stateVars)
                         if "name" in expression.expression.left:
                             contracts[contract].stateVars[expression.expression.left.name].expression = right
-                
-                # if not (functions[function]._node.visibility == "public" or functions[function]._node.visibility == "external"):
-                #     continue
+
+                # Skip private/internal functions unless they contain external calls
                 next_function = False
                 if self.checkKeyword(functions[function]._node):
                     self.keyword.append(function)
+                    # Check for reentrancy guards
                     for modifier in functions[function]._node.modifiers:
-                        
-                        if self.isReentrancyGuard(node=contracts[contract].modifiers[modifier.name]._node,contract=contract,storageVariable=dict(),stateVariablesList=stateVariables) == True:
+                        if self.isReentrancyGuard(node=contracts[contract].modifiers[modifier.name]._node,
+                                                contract=contract,storageVariable=dict(),stateVariablesList=stateVariables) == True:
                             next_function = True
                             break
                     if next_function:
                         continue
-                    
-                    if self.checkEffectsInteraction(node=functions[function]._node,contract=contract,storageVariable=dict(),stateVariablesList=stateVariables) == False:
+
+                    # Use enhanced CEI analysis
+                    if self.checkEffectsInteraction(node=functions[function]._node,contract=contract,
+                                                  storageVariable=dict(),stateVariablesList=stateVariables) == True:
                         filePath = None
                         contractFound = False
                         for file in self.node.imports:
@@ -651,8 +685,10 @@ class AuditReentrancy:
                                     filePath=file.path
                                     contractFound = True
                                     break
-                        # pprint.pprint(functions[function]._node,)
-                        
+
                         if functions[function]._node.visibility != "private" or functions[function]._node.visibility != "internal":
-                            logger.logVulnerability(contract_name=contract,function_name=function,vulneralbility=self.vulnerability,fileName=filePath)
+                            logger.logVulnerability(contract_name=contract,function_name=function,
+                                                  vulneralbility=self.vulnerability,fileName=filePath)
+
         self.keyword = ['call', 'send', 'transfer', 'delegatecall']
+        return False

@@ -888,12 +888,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitSourceUnit" ):
                 listener.exitSourceUnit(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitSourceUnit" ):
-                return visitor.visitSourceUnit(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -998,12 +992,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitPragmaDirective" ):
                 listener.exitPragmaDirective(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPragmaDirective" ):
-                return visitor.visitPragmaDirective(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1052,12 +1040,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitPragmaName" ):
                 listener.exitPragmaName(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPragmaName" ):
-                return visitor.visitPragmaName(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1103,12 +1085,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitPragmaValue" ):
                 listener.exitPragmaValue(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPragmaValue" ):
-                return visitor.visitPragmaValue(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1168,12 +1144,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitVersion" ):
                 listener.exitVersion(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVersion" ):
-                return visitor.visitVersion(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1232,12 +1202,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitVersionOperator" ):
                 listener.exitVersionOperator(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVersionOperator" ):
-                return visitor.visitVersionOperator(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1291,12 +1255,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitVersionConstraint" ):
                 listener.exitVersionConstraint(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVersionConstraint" ):
-                return visitor.visitVersionConstraint(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1373,12 +1331,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitImportDeclaration" ):
                 listener.exitImportDeclaration(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitImportDeclaration" ):
-                return visitor.visitImportDeclaration(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1445,12 +1397,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitImportDirective" ):
                 listener.exitImportDirective(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitImportDirective" ):
-                return visitor.visitImportDirective(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1581,12 +1527,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitImportPath" ):
                 listener.exitImportPath(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitImportPath" ):
-                return visitor.visitImportPath(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1642,12 +1582,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitContractDefinition" ):
                 listener.exitContractDefinition(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitContractDefinition" ):
-                return visitor.visitContractDefinition(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1747,12 +1681,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitInheritanceSpecifier" ):
                 listener.exitInheritanceSpecifier(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitInheritanceSpecifier" ):
-                return visitor.visitInheritanceSpecifier(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1845,12 +1773,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitContractPart" ):
                 listener.exitContractPart(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitContractPart" ):
-                return visitor.visitContractPart(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1994,12 +1916,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitStateVariableDeclaration" ):
                 listener.exitStateVariableDeclaration(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStateVariableDeclaration" ):
-                return visitor.visitStateVariableDeclaration(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2106,12 +2022,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitFileLevelConstant" ):
                 listener.exitFileLevelConstant(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFileLevelConstant" ):
-                return visitor.visitFileLevelConstant(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2168,12 +2078,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitCustomErrorDefinition" ):
                 listener.exitCustomErrorDefinition(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitCustomErrorDefinition" ):
-                return visitor.visitCustomErrorDefinition(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2229,12 +2133,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitTypeDefinition" ):
                 listener.exitTypeDefinition(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTypeDefinition" ):
-                return visitor.visitTypeDefinition(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2288,12 +2186,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitUsingForDeclaration" ):
                 listener.exitUsingForDeclaration(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitUsingForDeclaration" ):
-                return visitor.visitUsingForDeclaration(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2363,12 +2255,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitStructDefinition" ):
                 listener.exitStructDefinition(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStructDefinition" ):
-                return visitor.visitStructDefinition(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2461,12 +2347,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitModifierDefinition" ):
                 listener.exitModifierDefinition(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitModifierDefinition" ):
-                return visitor.visitModifierDefinition(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2561,12 +2441,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitModifierInvocation" ):
                 listener.exitModifierInvocation(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitModifierInvocation" ):
-                return visitor.visitModifierInvocation(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2643,12 +2517,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFunctionDefinition" ):
                 listener.exitFunctionDefinition(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionDefinition" ):
-                return visitor.visitFunctionDefinition(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2728,12 +2596,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitFunctionDescriptor" ):
                 listener.exitFunctionDescriptor(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionDescriptor" ):
-                return visitor.visitFunctionDescriptor(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2807,12 +2669,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitReturnParameters" ):
                 listener.exitReturnParameters(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitReturnParameters" ):
-                return visitor.visitReturnParameters(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2904,12 +2760,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitModifierList" ):
                 listener.exitModifierList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitModifierList" ):
-                return visitor.visitModifierList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3011,12 +2861,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitEventDefinition" ):
                 listener.exitEventDefinition(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEventDefinition" ):
-                return visitor.visitEventDefinition(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3074,12 +2918,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitEnumValue" ):
                 listener.exitEnumValue(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEnumValue" ):
-                return visitor.visitEnumValue(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3128,12 +2966,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitEnumDefinition" ):
                 listener.exitEnumDefinition(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEnumDefinition" ):
-                return visitor.visitEnumDefinition(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3206,12 +3038,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitParameterList" ):
                 listener.exitParameterList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitParameterList" ):
-                return visitor.visitParameterList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3286,12 +3112,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitParameter" ):
                 listener.exitParameter(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitParameter" ):
-                return visitor.visitParameter(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3353,12 +3173,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitEventParameterList" ):
                 listener.exitEventParameterList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEventParameterList" ):
-                return visitor.visitEventParameterList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3432,12 +3246,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitEventParameter" ):
                 listener.exitEventParameter(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEventParameter" ):
-                return visitor.visitEventParameter(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3499,12 +3307,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFunctionTypeParameterList" ):
                 listener.exitFunctionTypeParameterList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionTypeParameterList" ):
-                return visitor.visitFunctionTypeParameterList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3575,12 +3377,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitFunctionTypeParameter" ):
                 listener.exitFunctionTypeParameter(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionTypeParameter" ):
-                return visitor.visitFunctionTypeParameter(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3639,12 +3435,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitVariableDeclaration" ):
                 listener.exitVariableDeclaration(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVariableDeclaration" ):
-                return visitor.visitVariableDeclaration(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3720,12 +3510,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTypeName" ):
                 listener.exitTypeName(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTypeName" ):
-                return visitor.visitTypeName(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3835,12 +3619,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitUserDefinedTypeName" ):
                 listener.exitUserDefinedTypeName(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitUserDefinedTypeName" ):
-                return visitor.visitUserDefinedTypeName(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3900,12 +3678,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitMappingKey" ):
                 listener.exitMappingKey(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitMappingKey" ):
-                return visitor.visitMappingKey(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3964,12 +3736,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitMapping" ):
                 listener.exitMapping(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitMapping" ):
-                return visitor.visitMapping(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4044,12 +3810,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFunctionTypeName" ):
                 listener.exitFunctionTypeName(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionTypeName" ):
-                return visitor.visitFunctionTypeName(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4129,12 +3889,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitStorageLocation" ):
                 listener.exitStorageLocation(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStorageLocation" ):
-                return visitor.visitStorageLocation(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4191,12 +3945,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitStateMutability" ):
                 listener.exitStateMutability(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStateMutability" ):
-                return visitor.visitStateMutability(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4247,12 +3995,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitBlock" ):
                 listener.exitBlock(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBlock" ):
-                return visitor.visitBlock(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4364,12 +4106,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitStatement" ):
                 listener.exitStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStatement" ):
-                return visitor.visitStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4504,12 +4240,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitExpressionStatement" ):
                 listener.exitExpressionStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExpressionStatement" ):
-                return visitor.visitExpressionStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4560,12 +4290,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitIfStatement" ):
                 listener.exitIfStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitIfStatement" ):
-                return visitor.visitIfStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4642,12 +4366,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitTryStatement" ):
                 listener.exitTryStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTryStatement" ):
-                return visitor.visitTryStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4723,12 +4441,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitCatchClause" ):
                 listener.exitCatchClause(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitCatchClause" ):
-                return visitor.visitCatchClause(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4794,12 +4506,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitWhileStatement" ):
                 listener.exitWhileStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitWhileStatement" ):
-                return visitor.visitWhileStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4854,12 +4560,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitSimpleStatement" ):
                 listener.exitSimpleStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitSimpleStatement" ):
-                return visitor.visitSimpleStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4913,12 +4613,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitUncheckedStatement" ):
                 listener.exitUncheckedStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitUncheckedStatement" ):
-                return visitor.visitUncheckedStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4975,12 +4669,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitForStatement" ):
                 listener.exitForStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitForStatement" ):
-                return visitor.visitForStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5070,12 +4758,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitInlineAssemblyStatement" ):
                 listener.exitInlineAssemblyStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitInlineAssemblyStatement" ):
-                return visitor.visitInlineAssemblyStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -5133,12 +4815,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitDoWhileStatement" ):
                 listener.exitDoWhileStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitDoWhileStatement" ):
-                return visitor.visitDoWhileStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -5192,12 +4868,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitContinueStatement" ):
                 listener.exitContinueStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitContinueStatement" ):
-                return visitor.visitContinueStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -5240,12 +4910,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitBreakStatement" ):
                 listener.exitBreakStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBreakStatement" ):
-                return visitor.visitBreakStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5290,12 +4954,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitReturnStatement" ):
                 listener.exitReturnStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitReturnStatement" ):
-                return visitor.visitReturnStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5347,12 +5005,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitThrowStatement" ):
                 listener.exitThrowStatement(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitThrowStatement" ):
-                return visitor.visitThrowStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -5396,12 +5048,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitEmitStatement" ):
                 listener.exitEmitStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitEmitStatement" ):
-                return visitor.visitEmitStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5448,12 +5094,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitRevertStatement" ):
                 listener.exitRevertStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitRevertStatement" ):
-                return visitor.visitRevertStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5512,12 +5152,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitVariableDeclarationStatement" ):
                 listener.exitVariableDeclarationStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVariableDeclarationStatement" ):
-                return visitor.visitVariableDeclarationStatement(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5600,12 +5234,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitVariableDeclarationList" ):
                 listener.exitVariableDeclarationList(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVariableDeclarationList" ):
-                return visitor.visitVariableDeclarationList(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -5675,12 +5303,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitIdentifierList" ):
                 listener.exitIdentifierList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitIdentifierList" ):
-                return visitor.visitIdentifierList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -5765,12 +5387,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitElementaryTypeName" ):
                 listener.exitElementaryTypeName(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitElementaryTypeName" ):
-                return visitor.visitElementaryTypeName(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -5841,12 +5457,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitExpression" ):
                 listener.exitExpression(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExpression" ):
-                return visitor.visitExpression(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -6320,12 +5930,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitPrimaryExpression" ):
                 listener.exitPrimaryExpression(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPrimaryExpression" ):
-                return visitor.visitPrimaryExpression(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -6446,12 +6050,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitExpressionList" ):
                 listener.exitExpressionList(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExpressionList" ):
-                return visitor.visitExpressionList(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -6509,12 +6107,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitNameValueList" ):
                 listener.exitNameValueList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitNameValueList" ):
-                return visitor.visitNameValueList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -6584,12 +6176,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitNameValue" ):
                 listener.exitNameValue(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitNameValue" ):
-                return visitor.visitNameValue(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -6639,12 +6225,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFunctionCallArguments" ):
                 listener.exitFunctionCallArguments(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionCallArguments" ):
-                return visitor.visitFunctionCallArguments(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -6725,12 +6305,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFunctionCall" ):
                 listener.exitFunctionCall(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunctionCall" ):
-                return visitor.visitFunctionCall(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -6820,12 +6394,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyBlock" ):
                 listener.exitAssemblyBlock(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyBlock" ):
-                return visitor.visitAssemblyBlock(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -6946,12 +6514,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyItem" ):
                 listener.exitAssemblyItem(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyItem" ):
-                return visitor.visitAssemblyItem(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -7112,12 +6674,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyExpression" ):
                 listener.exitAssemblyExpression(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyExpression" ):
-                return visitor.visitAssemblyExpression(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7182,12 +6738,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyMember" ):
                 listener.exitAssemblyMember(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyMember" ):
-                return visitor.visitAssemblyMember(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7240,12 +6790,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyCall" ):
                 listener.exitAssemblyCall(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyCall" ):
-                return visitor.visitAssemblyCall(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -7344,12 +6888,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyLocalDefinition" ):
                 listener.exitAssemblyLocalDefinition(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyLocalDefinition" ):
-                return visitor.visitAssemblyLocalDefinition(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7409,12 +6947,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyAssignment" ):
                 listener.exitAssemblyAssignment(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyAssignment" ):
-                return visitor.visitAssemblyAssignment(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7468,12 +7000,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyIdentifierOrList" ):
                 listener.exitAssemblyIdentifierOrList(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyIdentifierOrList" ):
-                return visitor.visitAssemblyIdentifierOrList(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -7543,12 +7069,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyIdentifierList" ):
                 listener.exitAssemblyIdentifierList(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyIdentifierList" ):
-                return visitor.visitAssemblyIdentifierList(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7604,12 +7124,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyStackAssignment" ):
                 listener.exitAssemblyStackAssignment(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyStackAssignment" ):
-                return visitor.visitAssemblyStackAssignment(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7653,12 +7167,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitLabelDefinition" ):
                 listener.exitLabelDefinition(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitLabelDefinition" ):
-                return visitor.visitLabelDefinition(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -7710,12 +7218,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblySwitch" ):
                 listener.exitAssemblySwitch(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblySwitch" ):
-                return visitor.visitAssemblySwitch(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -7775,12 +7277,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyCase" ):
                 listener.exitAssemblyCase(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyCase" ):
-                return visitor.visitAssemblyCase(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -7855,12 +7351,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyFunctionDefinition" ):
                 listener.exitAssemblyFunctionDefinition(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyFunctionDefinition" ):
-                return visitor.visitAssemblyFunctionDefinition(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7928,12 +7418,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyFunctionReturns" ):
                 listener.exitAssemblyFunctionReturns(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyFunctionReturns" ):
-                return visitor.visitAssemblyFunctionReturns(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -7987,12 +7471,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyFor" ):
                 listener.exitAssemblyFor(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyFor" ):
-                return visitor.visitAssemblyFor(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -8072,12 +7550,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitAssemblyIf" ):
                 listener.exitAssemblyIf(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyIf" ):
-                return visitor.visitAssemblyIf(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -8133,12 +7605,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssemblyLiteral" ):
                 listener.exitAssemblyLiteral(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssemblyLiteral" ):
-                return visitor.visitAssemblyLiteral(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -8209,12 +7675,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitSubAssembly" ):
                 listener.exitSubAssembly(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitSubAssembly" ):
-                return visitor.visitSubAssembly(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -8263,12 +7723,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTupleExpression" ):
                 listener.exitTupleExpression(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTupleExpression" ):
-                return visitor.visitTupleExpression(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -8381,12 +7835,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitTypeNameExpression" ):
                 listener.exitTypeNameExpression(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTypeNameExpression" ):
-                return visitor.visitTypeNameExpression(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -8446,12 +7894,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitNumberLiteral" ):
                 listener.exitNumberLiteral(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitNumberLiteral" ):
-                return visitor.visitNumberLiteral(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -8520,12 +7962,6 @@ class SolidityParser ( Parser ):
             if hasattr( listener, "exitIdentifier" ):
                 listener.exitIdentifier(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitIdentifier" ):
-                return visitor.visitIdentifier(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -8575,12 +8011,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitHexLiteral" ):
                 listener.exitHexLiteral(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitHexLiteral" ):
-                return visitor.visitHexLiteral(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -8638,12 +8068,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitOverrideSpecifier" ):
                 listener.exitOverrideSpecifier(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitOverrideSpecifier" ):
-                return visitor.visitOverrideSpecifier(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -8713,12 +8137,6 @@ class SolidityParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitStringLiteral" ):
                 listener.exitStringLiteral(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStringLiteral" ):
-                return visitor.visitStringLiteral(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 

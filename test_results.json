@@ -1,0 +1,179 @@
+{
+  "safe_contracts": [
+    {
+      "file": "CEIGuard.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "CEI_require.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "OppenzepplinGuard.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "SafeMultipleCall.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "SafeDelegateCall.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "SimpleGuard.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "CEI_revert.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "FalsePositive.sol",
+      "expected": false,
+      "success": true,
+      "actual": false,
+      "correct": true,
+      "vulnerabilities": []
+    }
+  ],
+  "unsafe_contracts": [
+    {
+      "file": "UpdateAfterGuard.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "ReentrancyAttack.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "DAO.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "StorageVariable.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "IndirectReentrancy.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "DelegateCallReentrancy.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "UpdateAfterCEI.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "ComplexReentrancy.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "UnSafeMultipleCall.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "DumbDao.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "file": "CEI_violated.sol",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    }
+  ],
+  "etherscan_addresses": [
+    {
+      "address": "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413",
+      "name": "The DAO Contract",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    },
+    {
+      "address": "0x0c6C80D2061afA35E160F3799411d83BDEEA0a5A",
+      "name": "Test Address",
+      "expected": true,
+      "success": true,
+      "actual": true,
+      "correct": true,
+      "vulnerabilities": []
+    }
+  ],
+  "summary": {}
+}
