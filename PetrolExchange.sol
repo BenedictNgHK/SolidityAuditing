@@ -38,15 +38,7 @@ contract PetrolExchange{
         
 
         payable (msg.sender).transfer(balances[msg.sender] );
-    //     balances[msg.sender] = 0;
-        //getBalance();
-        // else if(false)
-        // {
-            
-        // }
-        // else
-        //     balances[msg.sender] = 1;
-
+ 
         
     }
     function buyPetrol(uint amount) public payable{

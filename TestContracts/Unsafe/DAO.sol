@@ -34,6 +34,7 @@ https://github.com/ConsenSys/Tokens/blob/master/Token_Contracts/contracts/Standa
 Which is itself based on the Ethereum standardized contract APIs:
 https://github.com/ethereum/wiki/wiki/Standardized_Contract_APIs
 */
+// Address: 0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413 
 
 /// @title Standard Token Contract.
 
@@ -190,14 +191,13 @@ contract ManagedAccount is ManagedAccountInterface{
 
     // When the contract receives a transaction without data this is called. 
     // It counts the amount of ether it receives and stores it in 
-    // // accumulatedInput.
+    // accumulatedInput.
     function() {
         accumulatedInput += msg.value;
     }
 
     function payOut(address _recipient, uint _amount) returns (bool) {
         if (msg.sender != owner || msg.value > 0 || (payOwnerOnly && _recipient != owner))
-
             throw;
         if (_recipient.call.value(_amount)()) {
             PayOut(_recipient, _amount);

@@ -6,6 +6,7 @@ class AuditReentrancy:
     def __init__(self, node):
         self.node = node
         self.vulnerability = 'Reentrancy'
+        self.keyword = ['call', 'send', 'transfer', 'delegatecall']
     def checkKeyword(self, node):
         if not isinstance(node, dict):
             return False
@@ -15,7 +16,7 @@ class AuditReentrancy:
             return value
         if node.get('type') == 'MemberAccess':
             member_name = node.get('memberName')
-            if member_name in ['call', 'send', 'transfer', 'delegatecall']:
+            if member_name in self.keyword:
                 return True
         # return False
 
@@ -366,7 +367,9 @@ class AuditReentrancy:
         return initialValues["require_invoked"] and initialValues["underline_invoked"] and initialValues["lock_first"] and initialValues["lock_second"]
     
     def ifInteraction(self, node) -> bool:
-        if node.type == 'MemberAccess' and (node.memberName == 'transfer' or node.memberName == 'send' or node.memberName == 'call' or node.memberName == 'delegatecall'):
+        # if node.type == 'MemberAccess' and (node.memberName == 'transfer' or node.memberName == 'send' or node.memberName == 'call' or node.memberName == 'delegatecall'):
+        #     return True
+        if node.type == 'MemberAccess' and node.memberName in self.keyword:
             return True
         return False
     def addProtectedVariables(self,node,protectedVariables, stateVariablesList):
@@ -628,7 +631,7 @@ class AuditReentrancy:
                 #     continue
                 next_function = False
                 if self.checkKeyword(functions[function]._node):
-                    
+                    self.keyword.append(function)
                     for modifier in functions[function]._node.modifiers:
                         
                         if self.isReentrancyGuard(node=contracts[contract].modifiers[modifier.name]._node,contract=contract,storageVariable=dict(),stateVariablesList=stateVariables) == True:
@@ -648,5 +651,8 @@ class AuditReentrancy:
                                     filePath=file.path
                                     contractFound = True
                                     break
+                        # pprint.pprint(functions[function]._node,)
                         
-                        logger.logVulnerability(contract_name=contract,function_name=function,vulneralbility=self.vulnerability,fileName=filePath)
+                        if functions[function]._node.visibility != "private" or functions[function]._node.visibility != "internal":
+                            logger.logVulnerability(contract_name=contract,function_name=function,vulneralbility=self.vulnerability,fileName=filePath)
+        self.keyword = ['call', 'send', 'transfer', 'delegatecall']

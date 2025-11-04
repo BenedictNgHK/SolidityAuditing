@@ -1,1 +1,1 @@
-exec python Reentrancy.py Sample.sol
+exec python main.py Sample.sol
